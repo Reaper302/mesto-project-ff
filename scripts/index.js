@@ -25,7 +25,7 @@ initialCards.forEach((addCards) => {
   placesList.appendChild(cardElement);
 });
 
-initialCards
+//initialCards
 
 // @todo: Темплейт карточки
 
