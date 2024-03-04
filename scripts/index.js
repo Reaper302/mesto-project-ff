@@ -15,16 +15,14 @@ function createCard(addCards, deleteCallback) {
   return cardClone;
 }
 
-function remove(deleteCallback) {
-  deleteCallback.target.closest('.places__item').remove();
+function remove(dс) {
+  dс.target.closest('.places__item').remove();
 }
 
 initialCards.forEach((addCards) => {
   const cardElement = createCard(addCards, remove);
   placesList.appendChild(cardElement);
 });
-
-//initialCards
 
 // @todo: Темплейт карточки
 
