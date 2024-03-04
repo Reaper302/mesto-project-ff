@@ -12,12 +12,11 @@ function createCard(addCards, deleteCallback) {
   cardTitle.textContent = addCards.name;
 
   delButton.addEventListener('click', deleteCallback)
-  placesList.appendChild(cardClone)
   return cardClone;
 }
 
-function remove(dc) {
-  dc.target.parentNode.remove()
+function remove(deleteCallback) {
+  deleteCallback.target.closest('.places__item').remove();
 }
 
 initialCards.forEach((addCards) => {
