@@ -1,81 +1,105 @@
 import '../index.css';
 import { initialCards } from '../cards/cards.js';
-const AddIcon = new URL('../images/add-icon.svg', import.meta.url);
-const Avatar = new URL('../images/avatar.jpg', import.meta.url);
-const CardCastle = new URL('../images/card_1.jpg', import.meta.url)
-const CardDesert = new URL('../images/card_2.jpg', import.meta.url);
-const CardMountains = new URL('../images/card_3.jpg', import.meta.url);
-const Close = new URL('../images/close.svg', import.meta.url)
-const DeleteIcon = new URL('../images/delete-icon.svg', import.meta.url);
-const EditIcon = new URL('../images/edit-icon.svg', import.meta.url);
-const LiceActive = new URL('../images/like-active.svg', import.meta.url)
-const LikeInActive = new URL('../images/like-inactive.svg', import.meta.url);
-const Logo = new URL('../images/logo.svg', import.meta.url);
+import { createCard, likeCard, remove } from "./card.js";
+import { openModal, closeModal } from './modal.js';
 
-import { placesList, addCardForm } from "./card.js";
-import { modal, nameInput, jobInput, nameContainer, jobContainer } from './modal.js';
+const editPopUp = document.querySelector('.popup_type_edit');
+const addPopUp = document.querySelector('.popup_type_new-card');
+const nameInput = document.querySelector('.popup__input_type_name');
+const jobInput = document.querySelector('.popup__input_type_description');
+const nameContainer = document.querySelector(".profile__title");
+const jobContainer = document.querySelector('.profile__description');
+const popupImage = document.querySelector('.popup_type_image');
+const popupImageContent = document.querySelector('.popup__image');
+const popupImageText = document.querySelector('.popup__caption');
+const placesList = document.querySelector('.places__list');
+const addCardForm = addPopUp.querySelector('.popup__form');
+const popUpForm = document.querySelector('.popup__form');
 
-import { createCard } from "./card.js";
-import { addCallback } from "./card.js";
-import { likeCard } from "./card.js";
-import { remove } from "./card.js";
-import { openCallback } from "./card.js";
-import { smoothOpeningEdit } from './modal.js';
-import { smoothOpeningAdd } from './modal.js';
+function openCallback(event) {
+  smoothOpeningImage();
+  popupImageContent.src = event.currentTarget.src;
+  popupImageContent.alt = event.currentTarget.alt;
+  popupImageText.textContent = event.currentTarget.alt;
+}
 
-addCardForm.addEventListener('submit', closePopup);
-function closePopup() {
-  smoothClosingAdd();
-};
+function smoothOpeningImage() {
+  popupImage.classList.add('popup_is-animated');
+  setTimeout(() => {
+    popupImage.classList.add("popup_is-opened")
+  }, 1);
+  popupImage.style.pointerEvents = 'auto';
+  popupImage.style.userSelect = 'auto';
+}
 
-initialCards.forEach((addCards) => {
-  const cardElement = createCard(addCards, remove, likeCard, openCallback, addCallback);
+initialCards.forEach((cardData) => {
+  const cardElement = createCard(cardData, remove, likeCard, openCallback);
   placesList.appendChild(cardElement);
 });
 
-const EditProfile = document.querySelector('.profile__edit-button');
-const addButton = document.querySelector('.profile__add-button');
-const popUpClose = document.querySelectorAll('.popup__close');
+function addCallback(evt) {
+  evt.preventDefault();
+  const name = addCardForm.querySelector('.popup__input_type_card-name').value;
+  const url = addCardForm.querySelector('.popup__input_type_url').value;
 
-popUpClose.forEach(button => {
+  const newCardData = {
+    name: name,
+    link: url
+  };
+
+  const newCardElement = createCard(newCardData, remove, likeCard, openCallback);
+  placesList.prepend(newCardElement);
+  addCardForm.reset();
+  closeModal(addPopUp);
+}
+
+addCardForm.addEventListener('submit', addCallback);
+
+const editButton = document.querySelector('.profile__edit-button');
+const addButton = document.querySelector('.profile__add-button');
+const popUpsClose = document.querySelectorAll('.popup__close');
+
+addButton.addEventListener('click', function() {
+  openModal(addPopUp);
+});
+
+editButton.addEventListener('click', function() {
+  openModal(editPopUp);
+  nameInput.value = nameContainer.textContent;
+  jobInput.value = jobContainer.textContent;
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    const openPopup = document.querySelector('.popup_is-animated');
+    if (openPopup) {
+      closeModal(openPopup);
+    }
+  }
+});
+
+document.addEventListener('click', (event) => {
+  if (event.target.classList.contains('popup')) {
+    closeModal(event.target);
+  }
+});
+
+popUpsClose.forEach(function(button) {
   button.addEventListener('click', function() {
-    smoothClosingEdit();
-    smoothClosingAdd();
-    smoothClosingImage();
+    closeModal(button.closest('.popup'));
   });
 });
 
-import { closeModalOnEsc } from './modal.js';
-import { closeModalOnClick } from './modal.js';
-import { smoothClosingEdit } from './modal.js';
-import { smoothClosingAdd } from './modal.js';
-import { smoothClosingImage } from './modal.js';
-
-const PageClose = document.querySelector('.page');
-PageClose.addEventListener('keydown', closeModalOnEsc);
-addButton.addEventListener('click', smoothOpeningAdd);
-EditProfile.addEventListener('click', smoothOpeningEdit);
-
-EditProfile.addEventListener('click', function() {
-  modal.style.display = 'flex';
-});
-PageClose.addEventListener('click', closeModalOnClick);
-
-const formElement = document.querySelector('.popup__form');
-// Обработчик «отправки» формы, хотя пока
-// она никуда отправляться не будет
-function handleFormSubmit(evt) {
+function editForm(evt) {
   evt.preventDefault();
-
   const name = nameInput.value;
   const job = jobInput.value;
 
   nameContainer.textContent = name;
   jobContainer.textContent = job;
-    
-  smoothClosingEdit();
+
+  closeModal(editPopUp);
   nameInput.value = "";
   jobInput.value = "";
-};
-
-formElement.addEventListener('submit', handleFormSubmit);
+}
+popUpForm.addEventListener('submit', editForm);
