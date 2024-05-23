@@ -1,7 +1,7 @@
 import '../index.css';
 import { initialCards } from '../cards/cards.js';
 import { createCard, likeCard, remove } from "./card.js";
-import { openModal, closeModal } from './modal.js';
+import { openModal, closeModal, closeModalByOverlay} from './modal.js';
 
 const editPopUp = document.querySelector('.popup_type_edit');
 const addPopUp = document.querySelector('.popup_type_new-card');
@@ -14,22 +14,13 @@ const popupImageContent = document.querySelector('.popup__image');
 const popupImageText = document.querySelector('.popup__caption');
 const placesList = document.querySelector('.places__list');
 const addCardForm = addPopUp.querySelector('.popup__form');
-const popUpForm = document.querySelector('.popup__form');
+const editForm = document.querySelector('.popup__form');
 
 function openCallback(event) {
-  smoothOpeningImage();
+  openModal(popupImage);
   popupImageContent.src = event.currentTarget.src;
   popupImageContent.alt = event.currentTarget.alt;
   popupImageText.textContent = event.currentTarget.alt;
-}
-
-function smoothOpeningImage() {
-  popupImage.classList.add('popup_is-animated');
-  setTimeout(() => {
-    popupImage.classList.add("popup_is-opened")
-  }, 1);
-  popupImage.style.pointerEvents = 'auto';
-  popupImage.style.userSelect = 'auto';
 }
 
 initialCards.forEach((cardData) => {
@@ -69,20 +60,7 @@ editButton.addEventListener('click', function() {
   jobInput.value = jobContainer.textContent;
 });
 
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    const openPopup = document.querySelector('.popup_is-animated');
-    if (openPopup) {
-      closeModal(openPopup);
-    }
-  }
-});
-
-document.addEventListener('click', (event) => {
-  if (event.target.classList.contains('popup')) {
-    closeModal(event.target);
-  }
-});
+document.addEventListener('click', closeModalByOverlay)
 
 popUpsClose.forEach(function(button) {
   button.addEventListener('click', function() {
@@ -90,7 +68,7 @@ popUpsClose.forEach(function(button) {
   });
 });
 
-function editForm(evt) {
+function interactionForm(evt) {
   evt.preventDefault();
   const name = nameInput.value;
   const job = jobInput.value;
@@ -102,4 +80,4 @@ function editForm(evt) {
   nameInput.value = "";
   jobInput.value = "";
 }
-popUpForm.addEventListener('submit', editForm);
+editForm.addEventListener('submit', interactionForm);
