@@ -1,7 +1,8 @@
 import '../index.css';
 import { initialCards } from '../cards/cards.js';
 import { createCard, likeCard, remove } from "./card.js";
-import { openModal, closeModal, closeModalByOverlay} from './modal.js';
+import { openModal, closeModal, closeModalByOverlay } from './modal.js';
+import { enableValidation, clearValidation } from './validation';
 
 const editPopUp = document.querySelector('.popup_type_edit');
 const addPopUp = document.querySelector('.popup_type_new-card');
@@ -14,7 +15,7 @@ const popupImageContent = document.querySelector('.popup__image');
 const popupImageText = document.querySelector('.popup__caption');
 const placesList = document.querySelector('.places__list');
 const addCardForm = addPopUp.querySelector('.popup__form');
-const editForm = document.querySelector('.popup__form');
+const editForm = editPopUp.querySelector('.popup__form');
 
 function openCallback(event) {
   openModal(popupImage);
@@ -41,6 +42,7 @@ function addCallback(evt) {
   const newCardElement = createCard(newCardData, remove, likeCard, openCallback);
   placesList.prepend(newCardElement);
   addCardForm.reset();
+  clearValidation(addCardForm, validationConfig);
   closeModal(addPopUp);
 }
 
@@ -51,16 +53,18 @@ const addButton = document.querySelector('.profile__add-button');
 const popUpsClose = document.querySelectorAll('.popup__close');
 
 addButton.addEventListener('click', function() {
+  clearValidation(addCardForm, validationConfig);
   openModal(addPopUp);
 });
 
 editButton.addEventListener('click', function() {
+  clearValidation(editForm, validationConfig);
   openModal(editPopUp);
   nameInput.value = nameContainer.textContent;
   jobInput.value = jobContainer.textContent;
 });
 
-document.addEventListener('click', closeModalByOverlay)
+document.addEventListener('click', closeModalByOverlay);
 
 popUpsClose.forEach(function(button) {
   button.addEventListener('click', function() {
@@ -77,7 +81,17 @@ function interactionForm(evt) {
   jobContainer.textContent = job;
 
   closeModal(editPopUp);
-  nameInput.value = "";
-  jobInput.value = "";
+  clearValidation(editForm, validationConfig);
 }
 editForm.addEventListener('submit', interactionForm);
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'button_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+};
+
+enableValidation(validationConfig);
