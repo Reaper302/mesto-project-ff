@@ -7,7 +7,6 @@ export function openModal(evt) {
   document.addEventListener('keydown', closeModalOnEsc);
 }
 
-
 export function closeModal(evt) {
   evt.removeAttribute('style');
   setTimeout(() => {
