@@ -9,21 +9,8 @@
   margin: 0 29px 0 0;
 }
 
-.profile__avatar-edit-button {
-  position: absolute;
-  left: 10%;
-  top: 110px;
-}
-.profile__avatar-edit-button:hover {
-  display: block;
-  position: absolute;
-  left: 10%;
-  top: 110px;
-}
-
 .profile__image:hover {
   cursor: pointer;
-  opacity: 50%;
 }
 
 @media screen and (max-width: 740px) {
