@@ -173,7 +173,6 @@ const validationConfig = {
 
 enableValidation(validationConfig);
 
-
 Promise.all([getUserProfile(), getInitialCards()])
   .then(([userData, cardsData]) => {
     userId = userData._id;

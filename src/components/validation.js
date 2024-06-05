@@ -87,6 +87,3 @@ export const clearValidation = (formElement, settings) => {
 
     toggleButtonState(inputList, buttonElement, settings);
 };
-
-
-
