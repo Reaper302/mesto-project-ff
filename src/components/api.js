@@ -10,7 +10,7 @@ export function getUserProfile() {
   return fetch(urlUser, { headers })
     .then(res => {
       if (!res.ok) {
-        throw new Error(`Error: ${res.statusText}`);
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
       return res.json();
     });
@@ -20,7 +20,7 @@ export function getInitialCards() {
   return fetch(urlCard, { headers })
     .then(res => {
       if (!res.ok) {
-        throw new Error(`Error: ${res.statusText}`);
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
       return res.json();
     });
@@ -34,7 +34,7 @@ export function updateProfile(name, about) {
   })
     .then(res => {
       if (!res.ok) {
-        throw new Error(`Error: ${res.statusText}`);
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
       return res.json();
     });
@@ -48,7 +48,7 @@ export function addCard(name, link) {
   })
     .then(res => {
       if (!res.ok) {
-        throw new Error(`Error: ${res.statusText}`);
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
       return res.json();
     });
@@ -61,7 +61,7 @@ export function deleteCard(cardId) {
   })
     .then(res => {
       if (!res.ok) {
-        throw new Error(`Error: ${res.statusText}`);
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
       return res.json();
     });
@@ -75,7 +75,7 @@ export function updateAvatar(avatar) {
   })
     .then(res => {
       if (!res.ok) {
-        throw new Error(`Error: ${res.statusText}`);
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
       return res.json();
     });
@@ -91,7 +91,7 @@ export function toggleLike(cardId, isLiked) {
   })
     .then(res => {
       if (!res.ok) {
-        throw new Error('Error: ' + res.statusText);
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
       return res.json();
     });
