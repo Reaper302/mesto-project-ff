@@ -1,4 +1,4 @@
-const cohortId = 'wff-cohort-14';
+import { toggleLike } from "./api";
 
 export function createCard(cardData, userId, openCallback, openConfirmPopup) {
   const cardTemplate = document.getElementById('card-template');

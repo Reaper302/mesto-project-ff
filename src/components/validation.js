@@ -29,7 +29,7 @@ const checkInputValidity = (formElement, inputElement, settings) => {
         } else {
             showInputError(formElement, inputElement, inputElement.validationMessage, settings);
         }
-    } else if ((inputElement.name === "name") && inputElement.name !== "avatar" && !namePattern.test(inputElement.value)) {
+    } else if ((inputElement.type !== "url") && inputElement.name !== "avatar" && !namePattern.test(inputElement.value)) {
         showInputError(formElement, inputElement, 'Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы.', settings);
     } else {
         hideInputError(formElement, inputElement, settings);

@@ -67,7 +67,6 @@ export function deleteCard(cardId) {
     });
 }
 
-.
 export function updateAvatar(avatar) {
   return fetch(`${urlUser}/avatar`, {
     method: 'PATCH',
@@ -82,7 +81,7 @@ export function updateAvatar(avatar) {
     });
 }
 
-function toggleLike(cardId, isLiked) {
+export function toggleLike(cardId, isLiked) {
   const method = isLiked ? 'PUT' : 'DELETE';
   return fetch(`https://nomoreparties.co/v1/${cohortId}/cards/likes/${cardId}`, {
     method: method,
