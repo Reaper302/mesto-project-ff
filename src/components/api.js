@@ -67,6 +67,7 @@ export function deleteCard(cardId) {
     });
 }
 
+.
 export function updateAvatar(avatar) {
   return fetch(`${urlUser}/avatar`, {
     method: 'PATCH',
