@@ -29,7 +29,7 @@ const checkInputValidity = (formElement, inputElement, settings) => {
         } else {
             showInputError(formElement, inputElement, inputElement.validationMessage, settings);
         }
-    } else if ((inputElement.name === "name") && !namePattern.test(inputElement.value)) {
+    } else if ((inputElement.name === "name") && inputElement.name !== "avatar" && !namePattern.test(inputElement.value)) {
         showInputError(formElement, inputElement, 'Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы.', settings);
     } else {
         hideInputError(formElement, inputElement, settings);
@@ -47,8 +47,9 @@ const toggleButtonState = (inputList, buttonElement, settings) => {
 };
 
 const hasInvalidInput = (inputList) => {
+    const namePattern = /^[a-zA-Zа-яА-ЯёЁ\s-]+$/;
     return inputList.some((inputElement) => {
-        return !inputElement.validity.valid;
+        return !inputElement.validity.valid || (inputElement.type !== "url" && inputElement.name !== "avatar" && !namePattern.test(inputElement.value));
     });
 };
 

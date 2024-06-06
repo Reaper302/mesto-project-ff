@@ -23,6 +23,7 @@ const avatarEditForm = avatarEditPopup.querySelector('.popup__form[name="avatar-
 const avatarInput = avatarEditForm.querySelector('.popup__input_type_avatar-link');
 let currentCardId;
 let userId;
+let currentCardElement;
 
 avatarEditButton.addEventListener('click', function() {
   clearValidation(avatarEditForm, validationConfig);
@@ -58,32 +59,23 @@ function openCallback(event) {
   popupImageText.textContent = event.currentTarget.alt;
 }
 
-function openConfirmPopup(cardId) {
+function openConfirmPopup(cardId, cardElement) {
   openModal(confirmPopup);
   currentCardId = cardId;
+  currentCardElement = cardElement
 }
 
 confirmPopup.querySelector('.popup__form').addEventListener('submit', function (evt) {
   evt.preventDefault();
   deleteCard(currentCardId)
     .then(() => {
-      updateCardsCallback();
+      if (currentCardElement) {
+        currentCardElement.remove()
+      }
       closeModal(confirmPopup);
     })
     .catch(err => console.error('Error:', err));
 });
-
-function updateCardsCallback() {
-  placesList.innerHTML = '';
-  getInitialCards()
-    .then(cardsData => {
-      cardsData.forEach((cardData) => {
-        const newCardElement = createCard(cardData, userId, openCallback, openConfirmPopup);
-        placesList.appendChild(newCardElement);
-      });
-    })
-    .catch(err => console.error('Error:', err));
-}
 
 function addCallback(evt) {
   evt.preventDefault();

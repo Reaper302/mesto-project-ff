@@ -80,3 +80,19 @@ export function updateAvatar(avatar) {
       return res.json();
     });
 }
+
+function toggleLike(cardId, isLiked) {
+  const method = isLiked ? 'PUT' : 'DELETE';
+  return fetch(`https://nomoreparties.co/v1/${cohortId}/cards/likes/${cardId}`, {
+    method: method,
+    headers: {
+      authorization: '6f573362-5f06-4f70-8bea-df09e2f16ca1'
+    }
+  })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Error: ' + res.statusText);
+      }
+      return res.json();
+    });
+  }

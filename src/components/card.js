@@ -8,6 +8,7 @@ export function createCard(cardData, userId, openCallback, openConfirmPopup) {
   const cardImage = cardClone.querySelector('.card__image');
   const cardTitle = cardClone.querySelector('.card__title');
   const likeContainer = cardClone.querySelector('.like-container');
+  const cardElement = cardClone.querySelector('.card');
 
   cardImage.src = cardData.link;
   cardImage.alt = cardData.name;
@@ -26,7 +27,7 @@ export function createCard(cardData, userId, openCallback, openConfirmPopup) {
   if (delButton) {
     delButton.addEventListener('click', (event) => {
       event.preventDefault();
-      openConfirmPopup(cardData._id);
+      openConfirmPopup(cardData._id, cardElement);
     });
   }
   likeButton.addEventListener('click', (event) => {
@@ -44,39 +45,4 @@ function handleLikeButtonClick(event, cardId, likeContainer, likeButton) {
       likeButton.classList.toggle('card__like-button_is-active');
     })
     .catch(error => console.error('Error:', error));
-}
-
-function toggleLike(cardId, isLiked) {
-  const method = isLiked ? 'PUT' : 'DELETE';
-  return fetch(`https://nomoreparties.co/v1/${cohortId}/cards/likes/${cardId}`, {
-    method: method,
-    headers: {
-      authorization: '6f573362-5f06-4f70-8bea-df09e2f16ca1'
-    }
-  })
-    .then(res => {
-      if (!res.ok) {
-        throw new Error('Error: ' + res.statusText);
-      }
-      return res.json();
-    });
-}
-
-export function deleteCard(cardId, updateCardsCallback) {
-  fetch(`https://nomoreparties.co/v1/${cohortId}/cards/${cardId}`, {
-    method: 'DELETE',
-    headers: {
-      authorization: '6f573362-5f06-4f70-8bea-df09e2f16ca1'
-    }
-  })
-  .then(res => {
-    if (!res.ok) {
-      throw new Error('Error: ' + res.statusText);
-    }
-    return res.json();
-  })
-  .then(() => {
-    updateCardsCallback();
-  })
-  .catch(error => console.error('Error:', error));
 }
